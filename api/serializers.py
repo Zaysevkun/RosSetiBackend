@@ -1,7 +1,12 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, get_user_model
 from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+
+from config import settings
+
+
+User = get_user_model()
 
 
 class CustomAuthTokenSerializer(AuthTokenSerializer):
@@ -31,3 +36,10 @@ class CustomAuthTokenSerializer(AuthTokenSerializer):
 
         attrs['user'] = user
         return attrs
+
+
+class UserInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'full_name', 'position', 'department', 'education',
+                  'date_of_birth', 'experience')

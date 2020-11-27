@@ -36,8 +36,13 @@ class UserManager(BaseUserManager):
 # Custom User Class
 class User(AbstractUser):
     username = None
-    full_name = models.CharField('ФИО', max_length=100)
     email = models.EmailField('Email', unique=True)
+    patronymic = models.CharField('Отчество', max_length=100)
+    position = models.CharField('Должность', max_length=100)
+    department = models.CharField('Подразделение', max_length=100, blank=True, null=True)
+    date_of_birth = models.DateField("Дата рождения", blank=True, null=True)
+    education = models.CharField("Образование", max_length=100, blank=True, null=True)
+    experience = models.PositiveIntegerField("Стаж", blank=True, null=True)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
@@ -49,4 +54,13 @@ class User(AbstractUser):
         verbose_name_plural = 'Пользователи'
 
     def __str__(self):
-        return self.full_name
+        return f"{self.email}"
+
+    @property
+    def full_name(self):
+        first_name = getattr(self, 'first_name', '')
+        last_name = getattr(self, 'last_name', '')
+        return f"{first_name} {last_name}".strip()
+
+
+# class
