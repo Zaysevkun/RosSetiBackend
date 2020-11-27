@@ -69,7 +69,7 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ('text', 'author', 'question')
 
 
-class DigitalCategoriesSerializer(serializers.ModelSerializer):
+class DigitalCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = DigitalCategory
         fields = "__all__"
@@ -94,6 +94,7 @@ class RewardSerializer(serializers.ModelSerializer):
 
 
 class RequestSerializer(serializers.ModelSerializer):
+    digital_categories = serializers.PrimaryKeyRelatedField(many=True, queryset=DigitalCategory.objects.all())
     expenses = ExpensesSerializer(many=True)
     stages = StageSerializer(many=True)
     rewards = RewardSerializer(many=True)

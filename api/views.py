@@ -7,9 +7,10 @@ from rest_framework.response import Response
 from rest_framework.schemas import coreapi as coreapi_schema
 from rest_framework.schemas import ManualSchema
 
-from api.models import User, Category, Question, Comment, Request
+from api.models import User, Category, Question, Comment, Request, DigitalCategory
 from api.serializers import (CustomAuthTokenSerializer, UserInfoSerializer, CategorySerializer,
-                             QuestionSerializer, CommentSerializer, RequestSerializer)
+                             QuestionSerializer, CommentSerializer, RequestSerializer,
+                             DigitalCategorySerializer)
 
 
 class CustomAuthToken(ObtainAuthToken):
@@ -76,6 +77,11 @@ class CommentsOnQuestionView(generics.ListAPIView):
     def get_queryset(self):
         question_pk = self.kwargs['question_pk']
         return Comment.objects.filter(question_id=question_pk)
+
+
+class DigitalCategoriesViewSet(viewsets.ModelViewSet):
+    queryset = DigitalCategory.objects.all()
+    serializer_class = DigitalCategorySerializer
 
 
 class RequestViewSet(viewsets.ModelViewSet):

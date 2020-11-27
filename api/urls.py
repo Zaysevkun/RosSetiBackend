@@ -9,6 +9,7 @@ router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
 router.register(r'categories', views.CategoryViewSet)
 router.register(r'requests', views.RequestViewSet)
+router.register(r'digital_categories', views.DigitalCategoriesViewSet)
 
 urlpatterns = [
     path('token', CustomAuthToken.as_view(), name='token'),
