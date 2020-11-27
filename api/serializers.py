@@ -2,12 +2,11 @@ from django.contrib.auth import authenticate, get_user_model
 from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 from rest_framework.authtoken.serializers import AuthTokenSerializer
+from .models import Category, Question, Comment
 
 from config import settings
 
-
 User = get_user_model()
-
 
 
 class CustomAuthTokenSerializer(AuthTokenSerializer):
@@ -41,7 +40,30 @@ class CustomAuthTokenSerializer(AuthTokenSerializer):
 
 class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
-
         model = User
         fields = ('id', 'full_name', 'position', 'department', 'education',
                   'date_of_birth', 'experience')
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Question
+        fields = ('pk', 'name', 'description', 'author', 'category', 'ask_date')
+
+
+class CategorySerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Category
+        fields = ('pk', 'name', 'description')
+
+    # def get_comments(self, obj):
+    #     return
+
+
+class CommentSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Comment
+        fields = ('text', 'author', 'question')

@@ -64,7 +64,8 @@ class User(AbstractUser):
 
 
 class Category(models.Model):
-    name = models.CharField('Название категории', max_length=64)
+    name = models.TextField('Название категории')
+    description = models.TextField('описание')
 
     class Meta:
         verbose_name = 'Категория форума'
@@ -78,8 +79,9 @@ class Question(models.Model):
     name = models.CharField('краткий вопрос', max_length=64)
     description = models.TextField('развернутый вопрос')
     author = models.ForeignKey(User, verbose_name='автор вопроса', on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, verbose_name='категория вопрос', on_delete=models.CASCADE)
-    ask_date = models.DateField('Когда задан вопрос', auto_now=True)
+    category = models.ForeignKey(Category, verbose_name='категория вопроса', on_delete=models.CASCADE,
+                                 related_name='questions')
+    ask_date = models.DateTimeField('Когда задан вопрос', auto_now=True)
 
     class Meta:
         verbose_name = 'Вопроc форума'
@@ -92,10 +94,12 @@ class Question(models.Model):
 class Comment(models.Model):
     text = models.TextField('текст комментария')
     author = models.ForeignKey(User, verbose_name='автор комментария', on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, verbose_name='вопрос комментария', on_delete=models.CASCADE,
+                                 related_name='comments')
 
     class Meta:
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
 
     def __str__(self):
-        return self.pk
+        return self.text

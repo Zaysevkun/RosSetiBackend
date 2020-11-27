@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as DjangoUserAdmin
-from api.models import User
+from api.models import User, Category, Question, Comment
 
 
 @admin.register(User)
@@ -20,3 +20,8 @@ class UserAdmin(DjangoUserAdmin):
     list_display = ('email', 'full_name')
     search_fields = ('email', 'full_name')
     ordering = ('email',)
+
+
+admin.site.register(Category)
+admin.site.register(Question)
+admin.site.register(Comment)
