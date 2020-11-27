@@ -89,7 +89,7 @@ class StageSerializer(serializers.ModelSerializer):
 
 class RewardSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Stage
+        model = Reward
         fields = "__all__"
 
 
@@ -122,7 +122,7 @@ class RequestSerializer(serializers.ModelSerializer):
         rewards_data = validated_data.pop('rewards', [])
         rewards_ids = []
         for reward_data in rewards_data:
-            date = rewards_data.get('date')
+            date = reward_data.get('date')
             reward = Reward.objects.create(
                 author=reward_data['author'],
                 percentage=reward_data['percentage'],
