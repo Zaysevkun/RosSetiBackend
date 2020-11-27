@@ -7,8 +7,9 @@ from rest_framework.response import Response
 from rest_framework.schemas import coreapi as coreapi_schema
 from rest_framework.schemas import ManualSchema
 
-from api.models import User, Category, Question, Comment
-from api.serializers import CustomAuthTokenSerializer, UserInfoSerializer, CategorySerializer, QuestionSerializer, CommentSerializer
+from api.models import User, Category, Question, Comment, Request
+from api.serializers import (CustomAuthTokenSerializer, UserInfoSerializer, CategorySerializer,
+                             QuestionSerializer, CommentSerializer, RequestSerializer)
 
 
 class CustomAuthToken(ObtainAuthToken):
@@ -76,3 +77,7 @@ class CommentsOnQuestionView(generics.ListAPIView):
         question_pk = self.kwargs['question_pk']
         return Comment.objects.filter(question_id=question_pk)
 
+
+class RequestViewSet(viewsets.ModelViewSet):
+    queryset = Request.objects.all()
+    serializer_class = RequestSerializer

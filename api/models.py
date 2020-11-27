@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -102,4 +103,39 @@ class Comment(models.Model):
         verbose_name_plural = 'Комментарии'
 
     def __str__(self):
-        return self.text
+        return self.pk
+
+
+class DigitalCategory(models.Model):
+    name = models.TextField("Название")
+    
+
+class Expenses(models.Model):
+    name = models.TextField("Статья расходов")
+    cost = models.PositiveBigIntegerField("Стоимость")
+    
+
+class Stage(models.Model):
+    name = models.TextField("Название")
+    count_of_days = models.PositiveIntegerField("Кол-во дней")
+
+
+class Reward(models.Model):
+    author = models.ForeignKey(get_user_model(), verbose_name="Автор", on_delete=models.CASCADE)
+    percentage = models.PositiveSmallIntegerField("Процент", blank=True, null=True)
+    date = models.DateField("Дата вознаграждения", blank=True, null=True)
+    is_signature = models.BooleanField(default=False)
+
+
+class Request(models.Model):
+    title = models.TextField("Заголовок", blank=True, null=True)
+    is_digital_categories = models.BooleanField(default=False)
+    digital_categories = models.ManyToManyField(DigitalCategory, verbose_name='Цифровые Категории', blank=True, null=True)
+    description = models.TextField("Описание", blank=True, null=True)
+    characteristic = models.TextField("Характеристика", blank=True, null=True)
+    expenses = models.ManyToManyField(Expenses, verbose_name="Статьи расходов", blank=True, null=True)
+    stages = models.ManyToManyField(Stage, verbose_name="Этапы", blank=True, null=True)
+    expectations = models.TextField("Ожидание", blank=True, null=True)
+    authors = models.ManyToManyField(get_user_model(), verbose_name="Авторы", blank=True, null=True)
+    rewards = models.ManyToManyField(Reward, blank=True, null=True)
+    is_saving_money = models.BooleanField(default=False)
