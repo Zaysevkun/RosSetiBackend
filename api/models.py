@@ -50,3 +50,41 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.full_name
+
+
+class ForumCategory(models.Model):
+    name = models.CharField('Название категории', max_length=64)
+
+    class Meta:
+        verbose_name = 'Категория форума'
+        verbose_name_plural = 'Категории форума'
+
+    def __str__(self):
+        return self.name
+
+
+class ForumQuestion(models.Model):
+    name = models.CharField('краткий вопрос', max_length=64)
+    description = models.TextField('развернутый вопрос')
+    author = models.ForeignKey(User, verbose_name='автор вопроса', on_delete=models.CASCADE)
+    category = models.ForeignKey(ForumCategory, verbose_name='категория вопрос', on_delete=models.CASCADE)
+    ask_date = models.DateField('Когда задан вопрос', auto_now=True)
+
+    class Meta:
+        verbose_name = 'Вопроc форума'
+        verbose_name_plural = 'Вопросы форума'
+
+    def __str__(self):
+        return self.name
+
+
+class Comment(models.Model):
+    text = models.TextField('текст комментария')
+    author = models.ForeignKey(User, verbose_name='автор комментария', on_delete=models.CASCADE)
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+
+    def __str__(self):
+        return self.pk
