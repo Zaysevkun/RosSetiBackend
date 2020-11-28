@@ -137,7 +137,7 @@ class RequestSerializer(serializers.ModelSerializer):
 	rewards = RewardSerializer(many=True)
 	created_by = AuthorSerializer(read_only=True)
 	comments = RequestCommentSerializer(many=True, read_only=True)
-	status = serializers.CharField(source='get_status_display')
+	status = serializers.CharField(source='get_status_display', required=False)
 	
 	class Meta:
 		model = Request
