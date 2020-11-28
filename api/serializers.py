@@ -111,7 +111,7 @@ class RequestSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Request
-        fields = ('title', 'is_digital_categories', 'digital_categories', 'description',
+        fields = ('id', 'title', 'is_digital_categories', 'digital_categories', 'description',
                   'characteristic', 'expenses', 'stages', 'expectations', 'authors', 'rewards',
                   'is_saving_money', 'created_at', 'status')
         extra_kwargs = {
