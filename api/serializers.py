@@ -141,7 +141,7 @@ class RequestSerializer(serializers.ModelSerializer):
 	class Meta:
 		model = Request
 		fields = ('id', 'title', 'is_digital_categories', 'digital_categories', 'description', 'authors_ids',
-		          'characteristic', 'expenses', 'stages', 'expectations', 'authors', 'rewards',
+		          'characteristic', 'expenses', 'stages', 'expectations', 'authors', 'rewards', 'status',
 		          'is_saving_money', 'created_at', 'status', 'authors', 'created_by', 'comments', 'is_draft')
 		extra_kwargs = {
 			'created_at': {'read_only': True}
@@ -160,7 +160,7 @@ class RequestSerializer(serializers.ModelSerializer):
 			stage = Stage.objects.create(name=stage_data['name'],
 			                             count_of_days=stage_data['count_of_days'])
 			stages_ids.append(stage.id)
-		authors_ids = validated_data.pop('authors', [])
+		authors_ids = validated_data.pop('authors_ids', [])
 		rewards_data = validated_data.pop('rewards', [])
 		rewards_ids = []
 		for reward_data in rewards_data:

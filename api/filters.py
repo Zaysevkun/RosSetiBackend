@@ -8,6 +8,7 @@ class RequestFilter(filters.FilterSet):
 		field_name='category_id', method='filter_by_category_id')
 	
 	is_digital_categories = filters.BooleanFilter()
+	status = filters.CharFilter()
 
 	# noinspection PyUnusedLocal
 	@staticmethod
