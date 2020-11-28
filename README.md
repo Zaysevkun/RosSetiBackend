@@ -19,6 +19,11 @@ SECRET_KEY=qwerty123
 DATABASE_URL=postgres://your_db_user_name:user_password@127.0.0.1:5432/your_db_name
 ALLOWED_HOSTS=*
 DEBUG=0
+EMAIL_HOST=smtp.gmail.com
+EMAIL_PORT=587
+EMAIL_HOST_USER=user@example.com
+EMAIL_HOST_PASSWORD=your_password
+DEFAULT_FROM_EMAIL=user@wxample.com
 ```
 6. `python manage.py migrate`
 7. `python manage.py collectstatic`
