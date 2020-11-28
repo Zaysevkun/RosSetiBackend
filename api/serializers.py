@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, get_user_model
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from django.core.mail import EmailMessage
@@ -6,7 +7,7 @@ from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 from .models import (Category, Question, Comment, Request, Expenses, Stage, Reward, DigitalCategory,
                      RequestComment)
-from .models import Chat, Messages, Expert
+from .models import Messages, Expert
 
 User = get_user_model()
 
@@ -42,15 +43,26 @@ class CustomAuthTokenSerializer(AuthTokenSerializer):
 
 class UserInfoSerializer(serializers.ModelSerializer):
     requests = serializers.SerializerMethodField()
+    messages = serializers.SerializerMethodField()
 
     class Meta:
         model = User
-        fields = ('id', 'full_name', 'position', 'department', 'education',
+        fields = ('id', 'full_name', 'position', 'department', 'education', 'messages',
                   'date_of_birth', 'experience', 'is_staff', 'email', 'phone', 'requests')
 
     @staticmethod
     def get_requests(obj):
         return RequestSerializer(obj.requests, many=True).data
+
+    def get_messages(self, obj):
+        author = self.context['view'].request.user
+        recipient = obj
+        if author.id == recipient.id:
+            return []
+        messages = Messages.objects.filter(
+            Q(author=author, recipient=recipient) |
+            Q(author=recipient, recipient=author)).order_by('-time')
+        return [{'is_mine': message.author.id == author.id, 'text': message.text, 'date': message.time.strftime("%Y-%m-%d %H:%M:%S")} for message in messages]
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -100,18 +112,6 @@ class AuthorSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'full_name', 'position', 'department', 'education',
                   'date_of_birth', 'experience', 'is_staff', 'email', 'phone')
-
-
-class MessagesSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Messages
-        fields = ('id', 'text', 'time', 'chat', 'author_id')
-
-
-class ChatSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Chat
-        fields = ('id', 'title', 'user1', 'user2')
 
 
 class RequestCommentSerializer(serializers.ModelSerializer):
@@ -200,3 +200,20 @@ class ExpertSerializer(serializers.ModelSerializer):
                     instance.status = 'registration'
                     instance.save()
             return super().update(instance, validated_data)
+
+
+class MessagesSerializer(serializers.ModelSerializer):
+    author = AuthorSerializer(read_only=True)
+    recipient_id = serializers.PrimaryKeyRelatedField(write_only=True, queryset=User.objects.all())
+    recipient = AuthorSerializer(read_only=True)
+    
+    class Meta:
+        model = Messages
+        fields = ('id', 'text', 'time', 'author', 'recipient', 'recipient_id')
+    
+    def create(self, validated_data):
+        author = self.context['view'].request.user
+        validated_data['recipient_id'] = validated_data['recipient_id'].id
+        validated_data['author'] = author
+        message = super().create(validated_data)
+        return message
