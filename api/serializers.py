@@ -185,3 +185,11 @@ class RequestSerializer(serializers.ModelSerializer):
 		request.rewards.add(*rewards_ids)
 		request.authors.add(*authors_ids)
 		return request
+	
+	def update(self, instance, validated_data):
+		is_draft = validated_data.get('is_draft')
+		if is_draft is not None:
+			if not is_draft:
+				instance.status = 'registration'
+				instance.save()
+		return super().update(instance, validated_data)
