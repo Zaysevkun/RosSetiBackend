@@ -162,10 +162,10 @@ class RequestComment(models.Model):
 
 class Request(models.Model):
     STATUS_CHOICES = [
-        ('draft', 'draft'),
-        ('registration', 'registration'),
-        ('on_approval', 'on_approval'),
-        ('revision', 'revision'),
+        ('Черновик', 'draft'),
+        ('Ожидает модерации', 'registration'),
+        ('Ожидает подтверждения', 'on_approval'),
+        ('Ожидает правок', 'revision')
     ]
     title = models.TextField("Заголовок", blank=True, null=True)
     is_digital_categories = models.BooleanField(default=False)

@@ -142,7 +142,8 @@ class RequestSerializer(serializers.ModelSerializer):
 		model = Request
 		fields = ('id', 'title', 'is_digital_categories', 'digital_categories', 'description', 'authors_ids',
 		          'characteristic', 'expenses', 'stages', 'expectations', 'authors', 'rewards', 'status',
-		          'is_saving_money', 'created_at', 'status', 'authors', 'created_by', 'comments', 'is_draft')
+		          'is_saving_money', 'created_at', 'status', 'authors', 'created_by', 'comments', 'is_draft',
+		          'likes')
 		extra_kwargs = {
 			'created_at': {'read_only': True}
 		}
