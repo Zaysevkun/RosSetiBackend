@@ -1,15 +1,16 @@
-# import django_filters as filters
-#
-#
-# class RequestFilter(filters.FilterSet):
-# 	filters.A
-#     category_id = filters.BaseInFilter(field_name='category_id',
-#                                                method='filter_by_category_id')
-#
-#     # noinspection PyUnusedLocal
-#     @staticmethod
-#     def filter_by_category_id(full_qs, field_name, value):
-# 	    if value.lower() == 'true':
-# 		    return full_qs.exclude(setting=1)
-# 	    return full_qs.filter(setting=value)
-#
+import ast
+
+import django_filters as filters
+
+
+class RequestFilter(filters.FilterSet):
+	category_id = filters.Filter(
+		field_name='category_id', method='filter_by_category_id')
+	
+	is_digital_categories = filters.BooleanFilter()
+
+	# noinspection PyUnusedLocal
+	@staticmethod
+	def filter_by_category_id(full_qs, field_name, value):
+		category_id = ast.literal_eval(value)
+		return full_qs.filter(digital_categories__in=category_id)

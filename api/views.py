@@ -11,6 +11,7 @@ from rest_framework.response import Response
 from rest_framework.schemas import coreapi as coreapi_schema
 from rest_framework.schemas import ManualSchema
 
+from api.filters import RequestFilter
 from api.models import User, Category, Question, Comment, Request, DigitalCategory, Chat, Messages
 from api.models import User, Category, Question, Comment, Request, DigitalCategory, RequestComment
 from api.serializers import (CustomAuthTokenSerializer, UserInfoSerializer, CategorySerializer,
@@ -95,7 +96,7 @@ class RequestViewSet(viewsets.ModelViewSet):
     queryset = Request.objects.all()
     serializer_class = RequestSerializer
     filter_backends = [rest_framework.DjangoFilterBackend]
-    # filterset_class = RequestFilter
+    filterset_class = RequestFilter
     permission_classes = [permissions.IsAuthenticated]
 
     def get_queryset(self):
