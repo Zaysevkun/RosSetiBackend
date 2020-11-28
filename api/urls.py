@@ -11,6 +11,7 @@ router.register(r'categories', views.CategoryViewSet)
 router.register(r'requests', views.RequestViewSet)
 router.register(r'digital_categories', views.DigitalCategoriesViewSet)
 router.register(r'chat', views.ChatViewSet)
+router.register(r'messages', views.MessagesViewSet)
 
 urlpatterns = [
     path('token', CustomAuthToken.as_view(), name='token'),
@@ -18,6 +19,7 @@ urlpatterns = [
     path('questions_in_category/<int:category_pk>', views.QuestionsInCategoryView.as_view()),
     path('comments_on_question/<int:question_pk>', views.CommentsOnQuestionView.as_view()),
     path('messages_in_chat/<int:user1_pk>/<int:user2_pk>', views.MessagesInChatView.as_view()),
+    path('pdf/', views.get_pdf_view),
 
     path('', include(router.urls)),
 ]

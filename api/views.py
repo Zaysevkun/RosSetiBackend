@@ -1,3 +1,6 @@
+import os
+
+from django.http import HttpResponse
 from django.shortcuts import render
 from rest_framework import viewsets, permissions, generics
 from rest_framework.authtoken.models import Token
@@ -13,6 +16,7 @@ from api.serializers import (CustomAuthTokenSerializer, UserInfoSerializer, Cate
                              QuestionSerializer, CommentSerializer, RequestSerializer,
                              DigitalCategorySerializer, ChatSerializer, MessagesSerializer,
                              DigitalCategorySerializer, RequestCommentSerializer)
+from config.settings import STATIC_ROOT
 
 
 class CustomAuthToken(ObtainAuthToken):
@@ -109,3 +113,17 @@ class MessagesInChatView(generics.ListAPIView):
 class RequestCommentView(generics.CreateAPIView):
     queryset = RequestComment.objects.all()
     serializer_class = RequestCommentSerializer
+
+
+class MessagesViewSet(viewsets.ModelViewSet):
+    queryset = Messages.objects.all()
+    serializer_class = MessagesSerializer
+
+
+def get_pdf_view(request):
+    output_filename = os.path.join(STATIC_ROOT, 'pdf/temp.pdf')
+    with open(output_filename, 'rb') as pdf_file:
+        response = HttpResponse(pdf_file.read())
+        response['Content-Type'] = 'mimetype/submimetype'
+        response['Content-Disposition'] = 'attachment; filename=temp.pdf'
+    return response

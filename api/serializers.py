@@ -106,13 +106,13 @@ class MessagesSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Messages
-        fields = ('pk', 'text', 'time', 'author_id')
+        fields = ('id', 'text', 'time', 'author_id')
 
 
 class ChatSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chat
-        fields = ('pk', 'title', 'user1', 'user2')
+        fields = ('id', 'title', 'user1', 'user2')
 
 
 class RequestCommentSerializer(serializers.ModelSerializer):
