@@ -87,3 +87,4 @@ class DigitalCategoriesViewSet(viewsets.ModelViewSet):
 class RequestViewSet(viewsets.ModelViewSet):
     queryset = Request.objects.all()
     serializer_class = RequestSerializer
+    permission_classes = [permissions.IsAuthenticated]

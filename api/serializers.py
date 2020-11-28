@@ -39,10 +39,16 @@ class CustomAuthTokenSerializer(AuthTokenSerializer):
 
 
 class UserInfoSerializer(serializers.ModelSerializer):
+    requests = serializers.SerializerMethodField()
+    
     class Meta:
         model = User
         fields = ('id', 'full_name', 'position', 'department', 'education',
-                  'date_of_birth', 'experience', 'is_staff')
+                  'date_of_birth', 'experience', 'is_staff', 'email', 'phone', 'requests')
+    
+    @staticmethod
+    def get_requests(obj):
+        return RequestSerializer(obj.requests, many=True).data
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -57,9 +63,6 @@ class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('pk', 'name', 'description')
-
-    # def get_comments(self, obj):
-    #     return
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -93,17 +96,28 @@ class RewardSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'full_name', 'position', 'department', 'education',
+                  'date_of_birth', 'experience', 'is_staff', 'email', 'phone')
+
+
 class RequestSerializer(serializers.ModelSerializer):
     digital_categories = serializers.PrimaryKeyRelatedField(many=True, queryset=DigitalCategory.objects.all())
     expenses = ExpensesSerializer(many=True)
     stages = StageSerializer(many=True)
     rewards = RewardSerializer(many=True)
+    # authors = AuthorSerializer(many=True)
     
     class Meta:
         model = Request
         fields = ('title', 'is_digital_categories', 'digital_categories', 'description',
                   'characteristic', 'expenses', 'stages', 'expectations', 'authors', 'rewards',
-                  'is_saving_money')
+                  'is_saving_money', 'created_at')
+        extra_kwargs = {
+            'created_at': {'read_only': True}
+        }
 
     def create(self, validated_data):
         digital_categories_ids = validated_data.pop('digital_categories', [])
@@ -129,7 +143,7 @@ class RequestSerializer(serializers.ModelSerializer):
                 date=date
             )
             rewards_ids.append(reward.id)
-        request = Request.objects.create(**validated_data)
+        request = Request.objects.create(**validated_data, created_by=self.context['request'].user)
         request.digital_categories.add(*digital_categories_ids)
         request.expenses.add(*expense_ids)
         request.stages.add(*stages_ids)
