@@ -2,6 +2,7 @@ import os
 
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.core.mail import EmailMessage
 from django_filters import rest_framework
 from rest_framework import viewsets, permissions, generics, filters
 from rest_framework.authtoken.models import Token
@@ -12,12 +13,12 @@ from rest_framework.schemas import coreapi as coreapi_schema
 from rest_framework.schemas import ManualSchema
 
 from api.filters import RequestFilter
-from api.models import User, Category, Question, Comment, Request, DigitalCategory, Chat, Messages
+from api.models import User, Category, Question, Comment, Request, DigitalCategory, Chat, Messages, Expert
 from api.models import User, Category, Question, Comment, Request, DigitalCategory, RequestComment
 from api.serializers import (CustomAuthTokenSerializer, UserInfoSerializer, CategorySerializer,
                              QuestionSerializer, CommentSerializer, RequestSerializer,
                              DigitalCategorySerializer, ChatSerializer, MessagesSerializer,
-                             DigitalCategorySerializer, RequestCommentSerializer)
+                             DigitalCategorySerializer, RequestCommentSerializer, ExpensesSerializer, ExpertSerializer)
 from config.settings import STATIC_ROOT
 
 
@@ -161,3 +162,23 @@ def get_doc_view(request):
         response['Content-Type'] = 'mimetype/submimetype'
         response['Content-Disposition'] = 'attachment; filename=temp.doc'
     return response
+
+
+class SendEmailToExpert(generics.RetrieveAPIView):
+    queryset = Expert
+    serializer_class = ExpertSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        # serializer.is_valid()
+        data = serializer.data
+        output_filename = os.path.join(STATIC_ROOT, 'pdf/temp.pdf')
+        subject = "Заявка рационализации на рассмотрение"
+        user = data.get('user')
+        to = user['email']
+        body = data.get('email_text')
+        email = EmailMessage(subject=subject, to=[to], body=body)
+        email.attach_file(output_filename, mimetype='mimetype/submimetype')
+        email.send()
+        return Response(serializer.data)

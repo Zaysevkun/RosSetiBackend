@@ -160,6 +160,12 @@ class RequestComment(models.Model):
         ordering = ['-created_at']
 
 
+class Expert(models.Model):
+    user = models.OneToOneField(User, verbose_name='Аккаунт эксперта', on_delete=models.CASCADE, related_name='user')
+    organization = models.TextField('Организация/отдел проверяющего')
+    email_text = models.TextField('Текст письма', blank=True, null=True)
+
+
 class Request(models.Model):
     STATUS_CHOICES = [
         ('draft', 'Черновик'),
@@ -187,6 +193,7 @@ class Request(models.Model):
     status = models.TextField('Статус', blank=True, null=True, choices=STATUS_CHOICES, default='draft')
     is_draft = models.BooleanField("Черновик?", default=True)
     likes = models.PositiveSmallIntegerField('Лайки', default=0)
+    experts = models.ManyToManyField(Expert, verbose_name='Проверяющие', blank=True)
 
     class Meta:
         ordering = ['-created_at']

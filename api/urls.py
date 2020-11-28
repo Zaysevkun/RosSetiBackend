@@ -21,6 +21,7 @@ urlpatterns = [
     path('messages_in_chat/<int:user1_pk>/<int:user2_pk>', views.MessagesInChatView.as_view()),
     path('pdf/', views.get_pdf_view),
     path('doc/', views.get_doc_view),
+    path('send_email/<int:pk>', views.SendEmailToExpert.as_view()),
 
     path('', include(router.urls)),
 ]
