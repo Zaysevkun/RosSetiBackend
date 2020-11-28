@@ -102,11 +102,10 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 
 class MessagesSerializer(serializers.ModelSerializer):
-    author = serializers.RelatedField
 
     class Meta:
         model = Messages
-        fields = ('id', 'text', 'time', 'author_id')
+        fields = ('id', 'text', 'time', 'chat', 'author_id')
 
 
 class ChatSerializer(serializers.ModelSerializer):
