@@ -171,6 +171,7 @@ class Request(models.Model):
 	                               verbose_name='Кем создана', blank=True, null=True)
 	created_at = models.DateField('Создано', auto_now_add=True, blank=True, null=True)
 	status = models.TextField('Статус', blank=True, null=True)
+	is_draft = models.BooleanField("Черновик?", default=True)
 	
 	class Meta:
 		ordering = ['-created_at']

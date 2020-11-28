@@ -13,6 +13,7 @@ router.register(r'digital_categories', views.DigitalCategoriesViewSet)
 
 urlpatterns = [
     path('token', CustomAuthToken.as_view(), name='token'),
+    path('requests/<int:request_pk>/comments', views.RequestCommentView.as_view()),
     path('questions_in_category/<int:category_pk>', views.QuestionsInCategoryView.as_view()),
     path('comments_on_question/<int:question_pk>', views.CommentsOnQuestionView.as_view()),
     path('', include(router.urls)),

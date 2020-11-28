@@ -3,7 +3,8 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 
-from .models import Category, Question, Comment, Request, Expenses, Stage, Reward, DigitalCategory
+from .models import (Category, Question, Comment, Request, Expenses, Stage, Reward, DigitalCategory,
+                     RequestComment)
 
 User = get_user_model()
 
@@ -99,6 +100,18 @@ class AuthorSerializer(serializers.ModelSerializer):
 		          'date_of_birth', 'experience', 'is_staff', 'email', 'phone')
 
 
+class RequestCommentSerializer(serializers.ModelSerializer):
+	class Meta:
+		model = RequestComment
+		fields = "__all__"
+	
+	def create(self, validated_data):
+		comment = super().create(validated_data)
+		request = Request.objects.get(id=self.context['view'].kwargs['request_pk'])
+		request.comments.add(comment.id)
+		return comment
+
+
 class RequestSerializer(serializers.ModelSerializer):
 	digital_categories = serializers.PrimaryKeyRelatedField(
 		many=True, queryset=DigitalCategory.objects.all())
@@ -109,12 +122,13 @@ class RequestSerializer(serializers.ModelSerializer):
 	stages = StageSerializer(many=True)
 	rewards = RewardSerializer(many=True)
 	created_by = AuthorSerializer(read_only=True)
-	
+	comments = RequestCommentSerializer(many=True, read_only=True)
+
 	class Meta:
 		model = Request
 		fields = ('id', 'title', 'is_digital_categories', 'digital_categories', 'description',
 		          'characteristic', 'expenses', 'stages', 'expectations', 'authors_ids', 'rewards',
-		          'is_saving_money', 'created_at', 'status', 'authors', 'created_by')
+		          'is_saving_money', 'created_at', 'status', 'authors', 'created_by', 'comments', 'is_draft')
 		extra_kwargs = {
 			'created_at': {'read_only': True}
 		}

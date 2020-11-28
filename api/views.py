@@ -7,10 +7,10 @@ from rest_framework.response import Response
 from rest_framework.schemas import coreapi as coreapi_schema
 from rest_framework.schemas import ManualSchema
 
-from api.models import User, Category, Question, Comment, Request, DigitalCategory
+from api.models import User, Category, Question, Comment, Request, DigitalCategory, RequestComment
 from api.serializers import (CustomAuthTokenSerializer, UserInfoSerializer, CategorySerializer,
                              QuestionSerializer, CommentSerializer, RequestSerializer,
-                             DigitalCategorySerializer)
+                             DigitalCategorySerializer, RequestCommentSerializer)
 
 
 class CustomAuthToken(ObtainAuthToken):
@@ -88,3 +88,8 @@ class RequestViewSet(viewsets.ModelViewSet):
     queryset = Request.objects.all()
     serializer_class = RequestSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class RequestCommentView(generics.CreateAPIView):
+    queryset = RequestComment.objects.all()
+    serializer_class = RequestCommentSerializer
