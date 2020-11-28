@@ -161,6 +161,12 @@ class RequestComment(models.Model):
 
 
 class Request(models.Model):
+    STATUS_CHOICES = [
+        ('draft', 'draft'),
+        ('registration', 'registration'),
+        ('on_approval', 'on_approval'),
+        ('revision', 'revision'),
+    ]
     title = models.TextField("Заголовок", blank=True, null=True)
     is_digital_categories = models.BooleanField(default=False)
     digital_categories = models.ManyToManyField(
@@ -180,9 +186,14 @@ class Request(models.Model):
     created_at = models.DateField('Создано', auto_now_add=True, blank=True, null=True)
     status = models.TextField('Статус', blank=True, null=True)
     is_draft = models.BooleanField("Черновик?", default=True)
+    likes = models.PositiveSmallIntegerField('Лайки', default=0)
 
     class Meta:
         ordering = ['-created_at']
+    
+    @property
+    def comments_count(self):
+        return self.comments.count()
 
 
 class Messages(models.Model):
@@ -190,4 +201,3 @@ class Messages(models.Model):
     time = models.DateTimeField('время сообщения', auto_now=True)
     chat = models.ForeignKey(Chat, verbose_name='чат', on_delete=models.CASCADE, related_name='messages')
     author_id = models.PositiveSmallIntegerField('id автора сообщения')
-

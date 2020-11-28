@@ -2,7 +2,8 @@ import os
 
 from django.http import HttpResponse
 from django.shortcuts import render
-from rest_framework import viewsets, permissions, generics
+from django_filters import rest_framework
+from rest_framework import viewsets, permissions, generics, filters
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.compat import coreapi, coreschema
@@ -93,7 +94,30 @@ class DigitalCategoriesViewSet(viewsets.ModelViewSet):
 class RequestViewSet(viewsets.ModelViewSet):
     queryset = Request.objects.all()
     serializer_class = RequestSerializer
+    filter_backends = [rest_framework.DjangoFilterBackend]
+    # filterset_class = RequestFilter
     permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        queryset = self.queryset
+        sorting = self.request.query_params.get('sorting')
+        if sorting:
+            sort_params = sorting.split(',')
+            for param in sort_params:
+                if param in ('created_at', '-created_at'):
+                    queryset = queryset.order_by(param)
+                elif param in ('likes', '-likes'):
+                    queryset = queryset.order_by(param)
+                elif param in ('comments_count', '-comments_count'):
+                    is_reversed = param.startswith('-')
+                    queryset = sorted(queryset, key=lambda t: t.comments_count, reverse=is_reversed)
+                elif param in ('last_comment_date', '-last_comment_date'):
+                    is_reversed = param.startswith('-')
+                    if is_reversed:
+                        queryset = queryset.order_by('-comments__created_at')
+                    else:
+                        queryset = queryset.order_by('comments__created_at')
+        return queryset
 
 
 class ChatViewSet(viewsets.ModelViewSet):
