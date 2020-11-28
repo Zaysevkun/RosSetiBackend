@@ -189,7 +189,7 @@ class RequestSerializer(serializers.ModelSerializer):
 	def update(self, instance, validated_data):
 		is_draft = validated_data.get('is_draft')
 		if is_draft is not None:
-			if not is_draft:
+			if not is_draft and instance.status == 'draft':
 				instance.status = 'registration'
 				instance.save()
 		return super().update(instance, validated_data)
