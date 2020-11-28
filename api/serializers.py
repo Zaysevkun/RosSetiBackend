@@ -42,7 +42,7 @@ class UserInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'full_name', 'position', 'department', 'education',
-                  'date_of_birth', 'experience')
+                  'date_of_birth', 'experience', 'is_staff')
 
 
 class QuestionSerializer(serializers.ModelSerializer):
