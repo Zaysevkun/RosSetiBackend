@@ -170,3 +170,4 @@ class Request(models.Model):
 	created_by = models.ForeignKey(get_user_model(), models.CASCADE, related_name='requests',
 	                               verbose_name='Кем создана', blank=True, null=True)
 	created_at = models.DateField('Создано', auto_now_add=True, blank=True, null=True)
+	status = models.TextField('Статус', blank=True, null=True)
