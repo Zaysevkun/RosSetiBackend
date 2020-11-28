@@ -189,4 +189,5 @@ class Messages(models.Model):
     text = models.TextField('текст сообщения')
     time = models.DateTimeField('время сообщения', auto_now=True)
     chat = models.ForeignKey(Chat, verbose_name='чат', on_delete=models.CASCADE, related_name='messages')
+    author_id = models.PositiveSmallIntegerField('id автора сообщения')
 

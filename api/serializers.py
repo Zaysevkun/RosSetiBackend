@@ -42,33 +42,30 @@ class CustomAuthTokenSerializer(AuthTokenSerializer):
 
 class UserInfoSerializer(serializers.ModelSerializer):
     requests = serializers.SerializerMethodField()
-    
+
     class Meta:
         model = User
         fields = ('id', 'full_name', 'position', 'department', 'education',
                   'date_of_birth', 'experience', 'is_staff', 'email', 'phone', 'requests')
-    
+
     @staticmethod
     def get_requests(obj):
         return RequestSerializer(obj.requests, many=True).data
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Question
         fields = ('pk', 'name', 'description', 'author', 'category', 'ask_date')
 
 
 class CategorySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Category
         fields = ('pk', 'name', 'description')
 
 
 class CommentSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = Comment
         fields = ('text', 'author', 'question')
@@ -106,9 +103,11 @@ class AuthorSerializer(serializers.ModelSerializer):
 
 
 class MessagesSerializer(serializers.ModelSerializer):
+    author = serializers.RelatedField
+
     class Meta:
         model = Messages
-        fields = ('pk', 'text', 'time')
+        fields = ('pk', 'text', 'time', 'author_id')
 
 
 class ChatSerializer(serializers.ModelSerializer):
@@ -118,15 +117,15 @@ class ChatSerializer(serializers.ModelSerializer):
 
 
 class RequestCommentSerializer(serializers.ModelSerializer):
-	class Meta:
-		model = RequestComment
-		fields = "__all__"
+    class Meta:
+        model = RequestComment
+        fields = "__all__"
 
-	def create(self, validated_data):
-		comment = super().create(validated_data)
-		request = Request.objects.get(id=self.context['view'].kwargs['request_pk'])
-		request.comments.add(comment.id)
-		return comment
+    def create(self, validated_data):
+        comment = super().create(validated_data)
+        request = Request.objects.get(id=self.context['view'].kwargs['request_pk'])
+        request.comments.add(comment.id)
+        return comment
 
 
 class RequestSerializer(serializers.ModelSerializer):
@@ -134,8 +133,9 @@ class RequestSerializer(serializers.ModelSerializer):
     expenses = ExpensesSerializer(many=True)
     stages = StageSerializer(many=True)
     rewards = RewardSerializer(many=True)
+
     # authors = AuthorSerializer(many=True)
-    
+
     class Meta:
         model = Request
         fields = ('title', 'is_digital_categories', 'digital_categories', 'description',
