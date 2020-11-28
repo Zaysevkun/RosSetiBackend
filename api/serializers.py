@@ -108,12 +108,13 @@ class RequestSerializer(serializers.ModelSerializer):
 	expenses = ExpensesSerializer(many=True)
 	stages = StageSerializer(many=True)
 	rewards = RewardSerializer(many=True)
+	created_by = AuthorSerializer(read_only=True)
 	
 	class Meta:
 		model = Request
 		fields = ('id', 'title', 'is_digital_categories', 'digital_categories', 'description',
 		          'characteristic', 'expenses', 'stages', 'expectations', 'authors_ids', 'rewards',
-		          'is_saving_money', 'created_at', 'status', 'authors')
+		          'is_saving_money', 'created_at', 'status', 'authors', 'created_by')
 		extra_kwargs = {
 			'created_at': {'read_only': True}
 		}
