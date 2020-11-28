@@ -1,12 +1,11 @@
 from django.contrib.auth import authenticate, get_user_model
-from rest_framework import serializers
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
 from rest_framework.authtoken.serializers import AuthTokenSerializer
-from .models import Category, Question, Comment, Request, Expenses, Stage, Reward, DigitalCategory, Chat, Messages
 
 from .models import (Category, Question, Comment, Request, Expenses, Stage, Reward, DigitalCategory,
                      RequestComment)
+from .models import Chat, Messages
 
 User = get_user_model()
 
@@ -129,51 +128,55 @@ class RequestCommentSerializer(serializers.ModelSerializer):
 
 
 class RequestSerializer(serializers.ModelSerializer):
-    digital_categories = serializers.PrimaryKeyRelatedField(many=True, queryset=DigitalCategory.objects.all())
-    expenses = ExpensesSerializer(many=True)
-    stages = StageSerializer(many=True)
-    rewards = RewardSerializer(many=True)
+	digital_categories = serializers.PrimaryKeyRelatedField(
+		many=True, queryset=DigitalCategory.objects.all())
+	authors_ids = serializers.PrimaryKeyRelatedField(
+		many=True, queryset=User.objects.all(), write_only=True)
+	authors = AuthorSerializer(many=True, read_only=True)
+	expenses = ExpensesSerializer(many=True)
+	stages = StageSerializer(many=True)
+	rewards = RewardSerializer(many=True)
+	created_by = AuthorSerializer(read_only=True)
+	comments = RequestCommentSerializer(many=True, read_only=True)
+	
+	class Meta:
+		model = Request
+		fields = ('title', 'is_digital_categories', 'digital_categories', 'description', 'authors_ids',
+		          'characteristic', 'expenses', 'stages', 'expectations', 'authors', 'rewards',
+		          'is_saving_money', 'created_at', 'status', 'authors', 'created_by', 'comments', 'is_draft')
+		extra_kwargs = {
+			'created_at': {'read_only': True}
+		}
 
-    # authors = AuthorSerializer(many=True)
-
-    class Meta:
-        model = Request
-        fields = ('title', 'is_digital_categories', 'digital_categories', 'description',
-                  'characteristic', 'expenses', 'stages', 'expectations', 'authors', 'rewards',
-                  'is_saving_money', 'created_at')
-        extra_kwargs = {
-            'created_at': {'read_only': True}
-        }
-
-    def create(self, validated_data):
-        digital_categories_ids = validated_data.pop('digital_categories', [])
-        expenses_data = validated_data.pop('expenses', [])
-        expense_ids = []
-        for expense_data in expenses_data:
-            expense = Expenses.objects.create(name=expense_data['name'], cost=expense_data['cost'])
-            expense_ids.append(expense.id)
-        stages_data = validated_data.pop('stages', [])
-        stages_ids = []
-        for stage_data in stages_data:
-            stage = Stage.objects.create(name=stage_data['name'],
-                                         count_of_days=stage_data['count_of_days'])
-            stages_ids.append(stage.id)
-        authors_ids = validated_data.pop('authors', [])
-        rewards_data = validated_data.pop('rewards', [])
-        rewards_ids = []
-        for reward_data in rewards_data:
-            date = reward_data.get('date')
-            reward = Reward.objects.create(
-                author=reward_data['author'],
-                percentage=reward_data['percentage'],
-                date=date
-            )
-            rewards_ids.append(reward.id)
-        request = Request.objects.create(**validated_data, created_by=self.context['request'].user)
-        request.digital_categories.add(*digital_categories_ids)
-        request.expenses.add(*expense_ids)
-        request.stages.add(*stages_ids)
-        request.authors.add(*authors_ids)
-        request.rewards.add(*rewards_ids)
-        request.authors.add(*authors_ids)
-        return request
+	def create(self, validated_data):
+		digital_categories_ids = validated_data.pop('digital_categories', [])
+		expenses_data = validated_data.pop('expenses', [])
+		expense_ids = []
+		for expense_data in expenses_data:
+			expense = Expenses.objects.create(name=expense_data['name'], cost=expense_data['cost'])
+			expense_ids.append(expense.id)
+		stages_data = validated_data.pop('stages', [])
+		stages_ids = []
+		for stage_data in stages_data:
+			stage = Stage.objects.create(name=stage_data['name'],
+			                             count_of_days=stage_data['count_of_days'])
+			stages_ids.append(stage.id)
+		authors_ids = validated_data.pop('authors', [])
+		rewards_data = validated_data.pop('rewards', [])
+		rewards_ids = []
+		for reward_data in rewards_data:
+			date = reward_data.get('date')
+			reward = Reward.objects.create(
+				author=reward_data['author'],
+				percentage=reward_data['percentage'],
+				date=date
+			)
+			rewards_ids.append(reward.id)
+		request = Request.objects.create(**validated_data, created_by=self.context['request'].user)
+		request.digital_categories.add(*digital_categories_ids)
+		request.expenses.add(*expense_ids)
+		request.stages.add(*stages_ids)
+		request.authors.add(*authors_ids)
+		request.rewards.add(*rewards_ids)
+		request.authors.add(*authors_ids)
+		return request
