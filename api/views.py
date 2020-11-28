@@ -127,3 +127,12 @@ def get_pdf_view(request):
         response['Content-Type'] = 'mimetype/submimetype'
         response['Content-Disposition'] = 'attachment; filename=temp.pdf'
     return response
+
+
+def get_doc_view(request):
+    output_filename = os.path.join(STATIC_ROOT, 'doc/temp.doc')
+    with open(output_filename, 'rb') as doc_file:
+        response = HttpResponse(doc_file.read())
+        response['Content-Type'] = 'mimetype/submimetype'
+        response['Content-Disposition'] = 'attachment; filename=temp.doc'
+    return response

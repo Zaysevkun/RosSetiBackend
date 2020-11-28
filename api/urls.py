@@ -20,6 +20,7 @@ urlpatterns = [
     path('comments_on_question/<int:question_pk>', views.CommentsOnQuestionView.as_view()),
     path('messages_in_chat/<int:user1_pk>/<int:user2_pk>', views.MessagesInChatView.as_view()),
     path('pdf/', views.get_pdf_view),
+    path('doc/', views.get_doc_view),
 
     path('', include(router.urls)),
 ]
