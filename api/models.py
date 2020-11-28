@@ -130,12 +130,19 @@ class Reward(models.Model):
 class Request(models.Model):
     title = models.TextField("Заголовок", blank=True, null=True)
     is_digital_categories = models.BooleanField(default=False)
-    digital_categories = models.ManyToManyField(DigitalCategory, verbose_name='Цифровые Категории', blank=True, null=True)
+    digital_categories = models.ManyToManyField(DigitalCategory, verbose_name='Цифровые Категории', blank=True)
     description = models.TextField("Описание", blank=True, null=True)
     characteristic = models.TextField("Характеристика", blank=True, null=True)
-    expenses = models.ManyToManyField(Expenses, verbose_name="Статьи расходов", blank=True, null=True)
-    stages = models.ManyToManyField(Stage, verbose_name="Этапы", blank=True, null=True)
+    expenses = models.ManyToManyField(Expenses, verbose_name="Статьи расходов", blank=True)
+    stages = models.ManyToManyField(Stage, verbose_name="Этапы", blank=True)
     expectations = models.TextField("Ожидание", blank=True, null=True)
-    authors = models.ManyToManyField(get_user_model(), verbose_name="Авторы", blank=True, null=True)
-    rewards = models.ManyToManyField(Reward, blank=True, null=True)
+    authors = models.ManyToManyField(get_user_model(), verbose_name="Авторы", blank=True)
+    rewards = models.ManyToManyField(Reward, blank=True)
     is_saving_money = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'Заявка'
+        verbose_name_plural = 'Заявки'
+
+    def __str__(self):
+        return self.title
