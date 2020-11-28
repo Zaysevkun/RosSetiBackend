@@ -7,9 +7,11 @@ from rest_framework.response import Response
 from rest_framework.schemas import coreapi as coreapi_schema
 from rest_framework.schemas import ManualSchema
 
+from api.models import User, Category, Question, Comment, Request, DigitalCategory, Chat, Messages
 from api.models import User, Category, Question, Comment, Request, DigitalCategory, RequestComment
 from api.serializers import (CustomAuthTokenSerializer, UserInfoSerializer, CategorySerializer,
                              QuestionSerializer, CommentSerializer, RequestSerializer,
+                             DigitalCategorySerializer, ChatSerializer, MessagesSerializer,
                              DigitalCategorySerializer, RequestCommentSerializer)
 
 
@@ -88,6 +90,20 @@ class RequestViewSet(viewsets.ModelViewSet):
     queryset = Request.objects.all()
     serializer_class = RequestSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+
+class ChatViewSet(viewsets.ModelViewSet):
+    queryset = Chat.objects.all()
+    serializer_class = ChatSerializer
+
+
+class MessagesInChatView(generics.ListAPIView):
+    serializer_class = MessagesSerializer
+
+    def get_queryset(self):
+        user1_pk = self.kwargs['user1_pk']
+        user2_pk = self.kwargs['user2_pk']
+        return Messages.objects.filter(chat__user1_id=user1_pk, chat__user2_id=user2_pk)
 
 
 class RequestCommentView(generics.CreateAPIView):
