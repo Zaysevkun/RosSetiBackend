@@ -174,6 +174,10 @@ class RequestSerializer(serializers.ModelSerializer):
 			)
 			rewards_ids.append(reward.id)
 		request = Request.objects.create(**validated_data, created_by=self.context['request'].user)
+		is_draft = validated_data.get('is_draft')
+		if not is_draft:
+			request.status = 'registration'
+			request.save()
 		request.digital_categories.add(*digital_categories_ids)
 		request.expenses.add(*expense_ids)
 		request.stages.add(*stages_ids)
