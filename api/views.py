@@ -171,15 +171,18 @@ class SendEmailToExpert(generics.RetrieveAPIView):
 
 
 class MessageView(generics.CreateAPIView):
+    """View for creating Messages between users"""
     serializer_class = MessagesSerializer
     queryset = Messages.objects.all()
 
 
 class RequestCommentView(generics.CreateAPIView):
+    """View for creating comments to Requests"""
     queryset = RequestComment.objects.all()
     serializer_class = RequestCommentSerializer
 
 
 class MessagesViewSet(viewsets.ModelViewSet):
+    """View for creating Messages between users"""
     queryset = Messages.objects.all()
     serializer_class = MessagesSerializer

@@ -101,6 +101,7 @@ class Question(models.Model):
 
 
 class Comment(models.Model):
+    """Comment model"""
     text = models.TextField('Текст комментария')
     author = models.ForeignKey(User, verbose_name='Автор комментария', on_delete=models.CASCADE)
     question = models.ForeignKey(Question, verbose_name='Вопрос комментария',
@@ -116,28 +117,48 @@ class Comment(models.Model):
 
 
 class DigitalCategory(models.Model):
+    """Digital category model for Request"""
+
     name = models.TextField("Название")
 
     class Meta:
-        verbose_name = ""
-        verbose_name_plural = ""
+        verbose_name = "Цифровая категория"
+        verbose_name_plural = "Цифровые категории"
 
 
 class Expenses(models.Model):
+    """Expenses model for Request"""
+
     name = models.TextField("Статья расходов")
     cost = models.PositiveBigIntegerField("Стоимость")
 
+    class Meta:
+        verbose_name = "Расходы"
+        verbose_name_plural = "Расходы"
+
 
 class Stage(models.Model):
+    """Stage model for Request"""
+
     name = models.TextField("Название")
     count_of_days = models.PositiveIntegerField("Кол-во дней")
 
+    class Meta:
+        verbose_name = "Этап"
+        verbose_name_plural = "Этапы"
+
 
 class Reward(models.Model):
+    """Raward model for Request"""
+
     author = models.ForeignKey(get_user_model(), verbose_name="Автор", on_delete=models.CASCADE)
     percentage = models.PositiveSmallIntegerField("Процент", blank=True, null=True)
     date = models.DateField("Дата вознаграждения", blank=True, null=True)
     is_signature = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "Вознаграждение"
+        verbose_name_plural = "Вознаграждения"
 
 
 class RequestComment(models.Model):

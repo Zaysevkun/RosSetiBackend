@@ -193,6 +193,9 @@ class RequestSerializer(serializers.ModelSerializer):
             if not is_draft:
                 instance.status = 'registration'
                 instance.save()
+        authors_ids = validated_data.pop('authors_ids', [])
+        if authors_ids:
+            instance.authors.add(*authors_ids)
         return super().update(instance, validated_data)
 
 
