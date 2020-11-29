@@ -20,14 +20,14 @@
     Это глобальный веб сервис по акселерации рационализационной деятельности в ПАО Россети
     <br />
     <a href="https://github.com/Zaysevkun/RosSetiBackend">
-    <strong>Explore the docs »</strong></a>
+    <strong>Документация »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/Zaysevkun/RosSetiBackend">View Demo</a>
+    <a href="https://github.com/Zaysevkun/RosSetiBackend">Демо</a>
     ·
-    <a href="https://github.com/Zaysevkun/RosSetiBackend/issues">Report Bug</a>
+    <a href="https://github.com/Zaysevkun/RosSetiBackend/issues">Сообщить о баге</a>
     ·
-    <a href="https://github.com/Zaysevkun/RosSetiBackend/issues">Request Feature</a>
+    <a href="https://github.com/Zaysevkun/RosSetiBackend/issues">Предложить фичу</a>
   </p>
   
 
@@ -35,32 +35,32 @@
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
-  <summary><h2 style="display: inline-block">Table of Contents</h2></summary>
+  <summary><h2 style="display: inline-block">Содержание</h2></summary>
   <ol>
     <li>
-      <a href="#about-the-project">About The Project</a>
+      <a href="#about-the-project">О проекте</a>
       <ul>
-        <li><a href="#built-with">Built With</a></li>
+        <li><a href="#built-with">Стек технологий</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Getting Started</a>
+      <a href="#getting-started">Первый запуск проекта</a>
       <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
+        <li><a href="#prerequisites">Требования</a></li>
+        <li><a href="#installation">Установка</a></li>
       </ul>
     </li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#roadmap">Роадмап</a></li>
+    <li><a href="#contributing">Контрибьютинг в проект</a></li>
+    <li><a href="#license">Лицензиия</a></li>
+    <li><a href="#contact">Контакты</a></li>
   </ol>
 </details>
 
 
 
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## О проекте
 
 ![Product Name Screen Shot][product-screenshot]
 
@@ -70,7 +70,7 @@
 
 
 
-### Built With
+### Стек технологий
 
 * [Vuejs](https://vuejs.org/)
 * [Python](https://www.python.org/)
@@ -79,11 +79,11 @@
 
 
 <!-- GETTING STARTED -->
-## Getting Started
+## Первый запуск проекта
 
 To get a local copy up and running follow these simple steps.
 
-### Prerequisites
+### Требования
 
 
 * PostgreSQL
@@ -91,24 +91,24 @@ To get a local copy up and running follow these simple steps.
   createdb your_db_name
   ```
 
-### Installation
+### Установка
 
-1. Clone the repo
+1. Склонировать репозиторий
    ```sh
    git clone https://github.com/Zaysevkun
    /RosSetiBackend
    .git
    ```
-2. Create python virtual environment
+2. Создать venv
    ```sh
    python -m venv myvenv
    source myvenv/bin/activate
    ```
-3. Install Python requirements
+3. Установить зависимости
    ```
    pip install -r requirements.txt
    ```
-4. Create .env file in project root
+4. Создать .env файл в корне проекта
    ```
    SECRET_KEY=qwerty123
    DATABASE_URL=postgres://your_db_user_name:user_password@127.0.0.1:5432/your_db_name
@@ -120,11 +120,11 @@ To get a local copy up and running follow these simple steps.
    EMAIL_HOST_PASSWORD=your_password
    DEFAULT_FROM_EMAIL=user@wxample.com
    ```   
-5. Apply intial migrations 
+5. Применить миграции
    ```
    python manage.py migrate
    ```
-6. Run project
+6. Запустить проект
    ```
    gunicorn config.wsgi
    ```
@@ -133,40 +133,40 @@ To get a local copy up and running follow these simple steps.
 
 
 <!-- ROADMAP -->
-## Roadmap
+## Роадмап
 
-See the [open issues](https://github.com/Zaysevkun/RosSetiBackend/issues) for a list of proposed features (and known issues).
+Смотрите [open issues](https://github.com/Zaysevkun/RosSetiBackend/issues) для списка заявленного функционала (и замеченных багов).
 
 
 
 <!-- CONTRIBUTING -->
-## Contributing
+## Контрибьютинг
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+1. Форкните проект
+2. Создайте ветку feature (`git checkout -b feature/AmazingFeature`)
+3. Закоммитьте изменения (`git commit -m 'Add some AmazingFeature'`)
+4. Запуште ветку (`git push origin feature/AmazingFeature`)
+5. Откройте пул реквест
 
 
 
 <!-- LICENSE -->
-## License
+## Лицензия
 
-Distributed under the MIT License. See `LICENSE` for more information.
+Распостраняется по лицензии MIT. Смотри `LICENSE` для дополнительной информации.
 
 
 
 <!-- CONTACT -->
-## Contact
+## Контакты
 
-Your Name - [@rossetiofficial](https://twitter.com/rossetiofficial) - rossetiinfo@gmail.com
+Россети - [@rossetiofficial](https://twitter.com/rossetiofficial) - rossetiinfo@gmail.com
 
-Project Link: [https://github.com/Zaysevkun/RosSetiBackend
+Проект: [https://github.com/Zaysevkun/RosSetiBackend
 ](https://github.com/Zaysevkun/RosSetiBackend
 )
+
+Проект на Heroku:[https://djangostripeapi.herokuapp.com/](https://djangostripeapi.herokuapp.com/)
 
 
 
