@@ -38,22 +38,22 @@
   <summary><h2 style="display: inline-block">Содержание</h2></summary>
   <ol>
     <li>
-      <a href="#about-the-project">О проекте</a>
+      <a href="#О-проекте">О проекте</a>
       <ul>
-        <li><a href="#built-with">Стек технологий</a></li>
+        <li><a href="#Стек-технологий">Стек технологий</a></li>
       </ul>
     </li>
     <li>
-      <a href="#getting-started">Первый запуск проекта</a>
+      <a href="#">Первый запуск проекта</a>
       <ul>
-        <li><a href="#prerequisites">Требования</a></li>
-        <li><a href="#installation">Установка</a></li>
+        <li><a href="#Требования">Требования</a></li>
+        <li><a href="#Установка">Установка</a></li>
       </ul>
     </li>
-    <li><a href="#roadmap">Роадмап</a></li>
+    <li><a href="#Роадмап">Роадмап</a></li>
     <li><a href="#contributing">Контрибьютинг в проект</a></li>
-    <li><a href="#license">Лицензиия</a></li>
-    <li><a href="#contact">Контакты</a></li>
+    <li><a href="#Лицензия">Лицензиия</a></li>
+    <li><a href="#Контакты">Контакты</a></li>
   </ol>
 </details>
 
@@ -166,7 +166,7 @@
 ](https://github.com/Zaysevkun/RosSetiBackend
 )
 
-Проект на Heroku:[https://djangostripeapi.herokuapp.com/](https://djangostripeapi.herokuapp.com/)
+Проект на Heroku:[https://rosseti.herokuapp.com/](https://rosseti.herokuapp.com/)
 
 
 
