@@ -81,7 +81,7 @@
 <!-- GETTING STARTED -->
 ## Первый запуск проекта
 
-To get a local copy up and running follow these simple steps.
+Руководство по запуску проекта локально.
 
 ### Требования
 
