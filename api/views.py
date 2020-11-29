@@ -1,30 +1,29 @@
 import os
 
-from django.http import HttpResponse
-from django.shortcuts import render
 from django.core.mail import EmailMessage
+from django.http import HttpResponse
 from django_filters import rest_framework
-from rest_framework import viewsets, permissions, generics, filters
+from rest_framework import viewsets, permissions, generics
 from rest_framework.authtoken.models import Token
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.compat import coreapi, coreschema
 from rest_framework.response import Response
-from rest_framework.schemas import coreapi as coreapi_schema
 from rest_framework.schemas import ManualSchema
+from rest_framework.schemas import coreapi as coreapi_schema
 
 from api.filters import RequestFilter
-from api.models import User, Category, Question, Comment, Request, DigitalCategory, Chat, Messages, Expert
+from api.models import Messages, Expert
 from api.models import User, Category, Question, Comment, Request, DigitalCategory, RequestComment
 from api.serializers import (CustomAuthTokenSerializer, UserInfoSerializer, CategorySerializer,
                              QuestionSerializer, CommentSerializer, RequestSerializer,
-                             DigitalCategorySerializer, ChatSerializer, MessagesSerializer,
-                             DigitalCategorySerializer, RequestCommentSerializer, ExpensesSerializer, ExpertSerializer)
+                             MessagesSerializer,
+                             DigitalCategorySerializer, RequestCommentSerializer, ExpertSerializer)
 from config.settings import STATIC_ROOT
 
 
 class CustomAuthToken(ObtainAuthToken):
     serializer_class = CustomAuthTokenSerializer
-
+    
     if coreapi_schema.is_enabled():
         schema = ManualSchema(
             fields=[
@@ -49,7 +48,7 @@ class CustomAuthToken(ObtainAuthToken):
             ],
             encoding="application/json",
         )
-
+    
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -74,7 +73,7 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
 class QuestionsInCategoryView(generics.ListAPIView):
     serializer_class = QuestionSerializer
-
+    
     def get_queryset(self):
         category_pk = self.kwargs['category_pk']
         return Question.objects.filter(category_id=category_pk)
@@ -82,7 +81,7 @@ class QuestionsInCategoryView(generics.ListAPIView):
 
 class CommentsOnQuestionView(generics.ListAPIView):
     serializer_class = CommentSerializer
-
+    
     def get_queryset(self):
         question_pk = self.kwargs['question_pk']
         return Comment.objects.filter(question_id=question_pk)
@@ -99,7 +98,7 @@ class RequestViewSet(viewsets.ModelViewSet):
     filter_backends = [rest_framework.DjangoFilterBackend]
     filterset_class = RequestFilter
     permission_classes = [permissions.IsAuthenticated]
-
+    
     def get_queryset(self):
         queryset = self.queryset
         sorting = self.request.query_params.get('sorting')
@@ -122,18 +121,9 @@ class RequestViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class ChatViewSet(viewsets.ModelViewSet):
-    queryset = Chat.objects.all()
-    serializer_class = ChatSerializer
-
-
-class MessagesInChatView(generics.ListAPIView):
+class MessageView(generics.CreateAPIView):
     serializer_class = MessagesSerializer
-
-    def get_queryset(self):
-        user1_pk = self.kwargs['user1_pk']
-        user2_pk = self.kwargs['user2_pk']
-        return Messages.objects.filter(chat__user1_id=user1_pk, chat__user2_id=user2_pk)
+    queryset = Messages.objects.all()
 
 
 class RequestCommentView(generics.CreateAPIView):
@@ -167,7 +157,7 @@ def get_doc_view(request):
 class SendEmailToExpert(generics.RetrieveAPIView):
     queryset = Expert
     serializer_class = ExpertSerializer
-
+    
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance)

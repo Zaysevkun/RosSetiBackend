@@ -10,7 +10,6 @@ router.register(r'users', views.UserViewSet)
 router.register(r'categories', views.CategoryViewSet)
 router.register(r'requests', views.RequestViewSet)
 router.register(r'digital_categories', views.DigitalCategoriesViewSet)
-router.register(r'chat', views.ChatViewSet)
 router.register(r'messages', views.MessagesViewSet)
 
 urlpatterns = [
@@ -18,10 +17,9 @@ urlpatterns = [
     path('requests/<int:request_pk>/comments', views.RequestCommentView.as_view()),
     path('questions_in_category/<int:category_pk>', views.QuestionsInCategoryView.as_view()),
     path('comments_on_question/<int:question_pk>', views.CommentsOnQuestionView.as_view()),
-    path('messages_in_chat/<int:user1_pk>/<int:user2_pk>', views.MessagesInChatView.as_view()),
+    path('messages/', views.MessageView.as_view()),
     path('pdf/', views.get_pdf_view),
     path('doc/', views.get_doc_view),
     path('send_email/<int:pk>', views.SendEmailToExpert.as_view()),
-
     path('', include(router.urls)),
 ]
