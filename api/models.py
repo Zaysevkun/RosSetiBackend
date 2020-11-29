@@ -36,6 +36,8 @@ class UserManager(BaseUserManager):
 
 # Custom User Class
 class User(AbstractUser):
+    """Base Django User model with extra fields."""
+
     username = None
     email = models.EmailField('Email', unique=True)
     patronymic = models.CharField('Отчество', max_length=100)
@@ -66,8 +68,10 @@ class User(AbstractUser):
 
 
 class Category(models.Model):
+    """Category model for forum"""
+
     name = models.TextField('Название категории')
-    description = models.TextField('описание')
+    description = models.TextField('Описание')
     
     class Meta:
         verbose_name = 'Категория форума'
@@ -78,10 +82,12 @@ class Category(models.Model):
 
 
 class Question(models.Model):
-    name = models.CharField('краткий вопрос', max_length=64)
-    description = models.TextField('развернутый вопрос')
-    author = models.ForeignKey(User, verbose_name='автор вопроса', on_delete=models.CASCADE)
-    category = models.ForeignKey(Category, verbose_name='категория вопроса',
+    """Question model for forum"""
+
+    name = models.CharField('Краткий вопрос', max_length=64)
+    description = models.TextField('Развернутый вопрос')
+    author = models.ForeignKey(User, verbose_name='Автор вопроса', on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, verbose_name='Категория вопроса',
                                  on_delete=models.CASCADE,
                                  related_name='questions')
     ask_date = models.DateTimeField('Когда задан вопрос', auto_now=True)
@@ -95,12 +101,12 @@ class Question(models.Model):
 
 
 class Comment(models.Model):
-    text = models.TextField('текст комментария')
-    author = models.ForeignKey(User, verbose_name='автор комментария', on_delete=models.CASCADE)
-    question = models.ForeignKey(Question, verbose_name='вопрос комментария',
+    text = models.TextField('Текст комментария')
+    author = models.ForeignKey(User, verbose_name='Автор комментария', on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, verbose_name='Вопрос комментария',
                                  on_delete=models.CASCADE,
                                  related_name='comments')
-    
+
     class Meta:
         verbose_name = 'Комментарий'
         verbose_name_plural = 'Комментарии'
@@ -111,6 +117,10 @@ class Comment(models.Model):
 
 class DigitalCategory(models.Model):
     name = models.TextField("Название")
+
+    class Meta:
+        verbose_name = ""
+        verbose_name_plural = ""
 
 
 class Expenses(models.Model):

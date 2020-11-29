@@ -4,6 +4,8 @@ import django_filters as filters
 
 
 class RequestFilter(filters.FilterSet):
+	"""Filters for Request"""
+
 	category_id = filters.Filter(
 		field_name='category_id', method='filter_by_category_id')
 	

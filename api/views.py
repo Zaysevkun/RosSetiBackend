@@ -22,6 +22,7 @@ from config.settings import STATIC_ROOT
 
 
 class CustomAuthToken(ObtainAuthToken):
+    """View for custom auth token"""
     serializer_class = CustomAuthTokenSerializer
     
     if coreapi_schema.is_enabled():
@@ -67,11 +68,17 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class CategoryViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint allows edit or view category
+    """
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
 class QuestionsInCategoryView(generics.ListAPIView):
+    """
+    API endpoint allows view questions in category
+    """
     serializer_class = QuestionSerializer
     
     def get_queryset(self):
@@ -88,11 +95,17 @@ class CommentsOnQuestionView(generics.ListAPIView):
 
 
 class DigitalCategoriesViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint allows edit or view digital categories
+    """
     queryset = DigitalCategory.objects.all()
     serializer_class = DigitalCategorySerializer
 
 
 class RequestViewSet(viewsets.ModelViewSet):
+    """
+    API endpoint allows edit or view requests
+    """
     queryset = Request.objects.all()
     serializer_class = RequestSerializer
     filter_backends = [rest_framework.DjangoFilterBackend]
@@ -120,22 +133,6 @@ class RequestViewSet(viewsets.ModelViewSet):
                         queryset = queryset.order_by('comments__created_at')
         return queryset
 
-
-class MessageView(generics.CreateAPIView):
-    serializer_class = MessagesSerializer
-    queryset = Messages.objects.all()
-
-
-class RequestCommentView(generics.CreateAPIView):
-    queryset = RequestComment.objects.all()
-    serializer_class = RequestCommentSerializer
-
-
-class MessagesViewSet(viewsets.ModelViewSet):
-    queryset = Messages.objects.all()
-    serializer_class = MessagesSerializer
-
-
 def get_pdf_view(request):
     output_filename = os.path.join(STATIC_ROOT, 'pdf/temp.pdf')
     with open(output_filename, 'rb') as pdf_file:
@@ -155,6 +152,7 @@ def get_doc_view(request):
 
 
 class SendEmailToExpert(generics.RetrieveAPIView):
+    """View to send email to expert """
     queryset = Expert
     serializer_class = ExpertSerializer
     
@@ -172,3 +170,18 @@ class SendEmailToExpert(generics.RetrieveAPIView):
         email.attach_file(output_filename, mimetype='mimetype/submimetype')
         email.send()
         return Response(serializer.data)
+
+
+class MessageView(generics.CreateAPIView):
+    serializer_class = MessagesSerializer
+    queryset = Messages.objects.all()
+
+
+class RequestCommentView(generics.CreateAPIView):
+    queryset = RequestComment.objects.all()
+    serializer_class = RequestCommentSerializer
+
+
+class MessagesViewSet(viewsets.ModelViewSet):
+    queryset = Messages.objects.all()
+    serializer_class = MessagesSerializer

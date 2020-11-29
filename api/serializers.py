@@ -2,7 +2,6 @@ from django.contrib.auth import authenticate, get_user_model
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 from rest_framework import serializers
-from django.core.mail import EmailMessage
 from rest_framework.authtoken.serializers import AuthTokenSerializer
 
 from .models import (Category, Question, Comment, Request, Expenses, Stage, Reward, DigitalCategory,
@@ -18,15 +17,15 @@ class CustomAuthTokenSerializer(AuthTokenSerializer):
         label=_("Email"),
         write_only=True
     )
-
+    
     def validate(self, attrs):
         email = attrs.get('email')
         password = attrs.get('password')
-
+        
         if email and password:
             user = authenticate(request=self.context.get('request'),
                                 email=email, password=password)
-
+            
             # The authenticate call simply returns None for is_active=False
             # users. (Assuming the default ModelBackend authentication
             # backend.)
@@ -36,7 +35,7 @@ class CustomAuthTokenSerializer(AuthTokenSerializer):
         else:
             msg = _('Must include "email" and "password".')
             raise serializers.ValidationError(msg, code='authorization')
-
+        
         attrs['user'] = user
         return attrs
 
@@ -44,16 +43,16 @@ class CustomAuthTokenSerializer(AuthTokenSerializer):
 class UserInfoSerializer(serializers.ModelSerializer):
     requests = serializers.SerializerMethodField()
     messages = serializers.SerializerMethodField()
-
+    
     class Meta:
         model = User
         fields = ('id', 'full_name', 'position', 'department', 'education', 'messages',
                   'date_of_birth', 'experience', 'is_staff', 'email', 'phone', 'requests')
-
+    
     @staticmethod
     def get_requests(obj):
         return RequestSerializer(obj.requests, many=True).data
-
+    
     def get_messages(self, obj):
         author = self.context['view'].request.user
         recipient = obj
@@ -62,7 +61,8 @@ class UserInfoSerializer(serializers.ModelSerializer):
         messages = Messages.objects.filter(
             Q(author=author, recipient=recipient) |
             Q(author=recipient, recipient=author)).order_by('-time')
-        return [{'is_mine': message.author.id == author.id, 'text': message.text, 'date': message.time.strftime("%Y-%m-%d %H:%M:%S")} for message in messages]
+        return [{'is_mine': message.author.id == author.id, 'text': message.text,
+                 'date': message.time.strftime("%Y-%m-%d %H:%M:%S")} for message in messages]
 
 
 class QuestionSerializer(serializers.ModelSerializer):
@@ -118,7 +118,7 @@ class RequestCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = RequestComment
         fields = "__all__"
-
+    
     def create(self, validated_data):
         comment = super().create(validated_data)
         request = Request.objects.get(id=self.context['view'].kwargs['request_pk'])
@@ -138,17 +138,18 @@ class RequestSerializer(serializers.ModelSerializer):
     created_by = AuthorSerializer(read_only=True)
     comments = RequestCommentSerializer(many=True, read_only=True)
     status = serializers.CharField(source='get_status_display', required=False)
-
+    
     class Meta:
         model = Request
-        fields = ('id', 'title', 'is_digital_categories', 'digital_categories', 'description', 'authors_ids',
-                  'characteristic', 'expenses', 'stages', 'expectations', 'authors', 'rewards', 'status',
-                  'is_saving_money', 'created_at', 'status', 'authors', 'created_by', 'comments', 'is_draft',
-                  'likes')
+        fields = (
+        'id', 'title', 'is_digital_categories', 'digital_categories', 'description', 'authors_ids',
+        'characteristic', 'expenses', 'stages', 'expectations', 'authors', 'rewards', 'status',
+        'is_saving_money', 'created_at', 'status', 'authors', 'created_by', 'comments', 'is_draft',
+        'likes')
         extra_kwargs = {
             'created_at': {'read_only': True}
         }
-
+    
     def create(self, validated_data):
         digital_categories_ids = validated_data.pop('digital_categories', [])
         expenses_data = validated_data.pop('expenses', [])
@@ -185,6 +186,14 @@ class RequestSerializer(serializers.ModelSerializer):
         request.rewards.add(*rewards_ids)
         request.authors.add(*authors_ids)
         return request
+    
+    def update(self, instance, validated_data):
+        is_draft = validated_data.get('is_draft')
+        if is_draft is not None:
+            if not is_draft:
+                instance.status = 'registration'
+                instance.save()
+        return super().update(instance, validated_data)
 
 
 class ExpertSerializer(serializers.ModelSerializer):
@@ -192,14 +201,6 @@ class ExpertSerializer(serializers.ModelSerializer):
         model = Expert
         fields = ('user', 'organization', 'email_text')
         depth = 1
-
-        def update(self, instance, validated_data):
-            is_draft = validated_data.get('is_draft')
-            if is_draft is not None:
-                if not is_draft and instance.status == 'draft':
-                    instance.status = 'registration'
-                    instance.save()
-            return super().update(instance, validated_data)
 
 
 class MessagesSerializer(serializers.ModelSerializer):
