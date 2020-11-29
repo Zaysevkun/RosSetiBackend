@@ -122,9 +122,6 @@ class RequestViewSet(viewsets.ModelViewSet):
                     queryset = queryset.order_by(param)
                 elif param in ('likes', '-likes'):
                     queryset = queryset.order_by(param)
-                elif param in ('comments_count', '-comments_count'):
-                    is_reversed = param.startswith('-')
-                    queryset = sorted(queryset, key=lambda t: t.comments_count, reverse=is_reversed)
                 elif param in ('last_comment_date', '-last_comment_date'):
                     is_reversed = param.startswith('-')
                     if is_reversed:
@@ -132,6 +129,7 @@ class RequestViewSet(viewsets.ModelViewSet):
                     else:
                         queryset = queryset.order_by('comments__created_at')
         return queryset
+
 
 def get_pdf_view(request):
     output_filename = os.path.join(STATIC_ROOT, 'pdf/temp.pdf')
