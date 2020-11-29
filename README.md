@@ -166,7 +166,7 @@
 ](https://github.com/Zaysevkun/RosSetiBackend
 )
 
-Проект на Heroku:[https://rosseti.herokuapp.com/](https://rosseti.herokuapp.com/)
+Проект на Heroku(Backend API):[https://rosseti.herokuapp.com/](https://rosseti.herokuapp.com/)
 
 
 
