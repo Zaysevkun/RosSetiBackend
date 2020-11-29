@@ -17,13 +17,13 @@
 
 <!-- PROJECT LOGO -->
 <br />
-<p>
+<p align="center">
   <a href="https://github.com/Zaysevkun/RosSetiBackend">
-    <img src="https://github.com/Zaysevkun/RosSetiBackend/rossetilogo.jpg" alt="Logo" width="934" height="273">
+    <img src="https://github.com/Zaysevkun/RosSetiBackend/blob/master/rossetilogo.jpg?raw=true" alt="Logo" width="400" height="120">
   </a>
 
   <h3 align="center">Росcети сервис рационализационной деятельности</h3>
-
+</p>
   <p>
     Это глобальный веб сервис по акселерации рационализационной деятельности в ПАО Россети
     <br />
@@ -37,7 +37,7 @@
     ·
     <a href="https://github.com/Zaysevkun/RosSetiBackend/issues">Request Feature</a>
   </p>
-  </p>
+  
 
 
 
@@ -191,21 +191,20 @@ Project Link: [https://github.com/Zaysevkun/RosSetiBackend
 
 
 
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/Zaysevkun/repo.svg?style=for-the-badge
+
+[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
 [contributors-url]: https://github.com/Zaysevkun/RosSetiBackend/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/Zaysevkun/repo.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
 [forks-url]: https://github.com/Zaysevkun/RosSetiBackend/network/members
-[stars-shield]: https://img.shields.io/github/stars/Zaysevkun/repo.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
 [stars-url]: https://github.com/Zaysevkun/RosSetiBackend/stargazers
-[issues-shield]: https://img.shields.io/github/issues/Zaysevkun/repo.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
 [issues-url]: https://github.com/Zaysevkun/RosSetiBackend/issues
-[license-shield]: https://img.shields.io/github/license/Zaysevkun/repo.svg?style=for-the-badge
-[license-url]: https://github.com/Zaysevkun/RosSetiBackend/blob/master/LICENSE.txt
+[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
+[license-url]: https://github.com/Zaysevkun/RosSetiBackend/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/Zaysevkun
-[product-screenshot]: https://github.com/Zaysevkun/RosSetiBackend/project-screenshot.jpg
+[product-screenshot]: https://github.com/Zaysevkun/RosSetiBackend/blob/master/project-screenshot.jpg?raw=true
 
 
 
